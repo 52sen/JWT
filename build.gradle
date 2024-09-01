@@ -1,0 +1,46 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.9'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	compileOnly 'org.projectlombok:lombok'
+//	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	//Jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+	// 이전에 사용하는 0.11.5 버전과 현재 0.12.3 버전의 메소드 구현방식의 차이가 상이하기 떄문에, 추후 0.11.5버전의 메소드 구현 방식도 알아야 할 필요성이 있음
+	//https:// mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
