@@ -16,3 +16,6 @@ https://docs.spring.io/spring-security/reference/servlet/architecture.html
 
 jwt maven
 https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+
+확인방법)
+postman으로 토큰을 받아온 후 get요청 header에 실어서 확인
