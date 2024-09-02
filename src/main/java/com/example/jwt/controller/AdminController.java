@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ResponseBody
 //웹으로 응답하는 것이 아니기떄문에 특정한 문자열로 지정
 public class AdminController {
-    @GetMapping
+
+    @GetMapping("/admin")
     public String adminP(){
         return "Admin Controller";
     }
