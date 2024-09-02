@@ -1,5 +1,7 @@
 package com.example.jwt.config;
 
+import com.example.jwt.jwt.JWTFilter;
+import com.example.jwt.jwt.JWTUtil;
 import com.example.jwt.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +24,13 @@ public class SecurityConfig {
     // AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
     private final AuthenticationConfiguration authenticationConfiguration;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
+    //JWTUtil 주입
+    private final JWTUtil jwtUtil;
+
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
 
         this.authenticationConfiguration = authenticationConfiguration;
+        this.jwtUtil = jwtUtil;
     }
 
     @Bean
@@ -60,10 +66,15 @@ public class SecurityConfig {
                        .requestMatchers("/admin").hasRole("ADMIN")
                        .anyRequest().authenticated()); // 다른 접근은 로그인한 사용자만 사용할 수 있도록
 
+       //JWTFilter 등록
+       http
+               .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+
+
        // 필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함)
        // 따라서 등록 필요
        http
-               .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+               .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
        //세션 설정
        http
